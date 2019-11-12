@@ -1,0 +1,125 @@
+m255
+K4
+z2
+13
+!s112 1.1
+!i10d 8192
+!i10e 25
+!i10f 100
+cModel Technology
+Z0 dC:/Users/ziyang/Documents/Stage3_Semester1/BDIC3004J Digital System Design/Lab2/simulation/modelsim
+vALU
+Z1 !s110 1573553105
+!i10b 1
+!s100 CN0_YMc<iVT=G8kYPOajn3
+I0jb8CS7=`h]e>`N80Uhg82
+Z2 VDg1SIo80bB@j0V0VzS_@n1
+R0
+w1572345839
+8C:/Users/ziyang/Documents/Stage3_Semester1/BDIC3004J Digital System Design/Lab2/ALU.v
+FC:/Users/ziyang/Documents/Stage3_Semester1/BDIC3004J Digital System Design/Lab2/ALU.v
+L0 1
+Z3 OV;L;10.5b;63
+r1
+!s85 0
+31
+Z4 !s108 1573553105.000000
+!s107 C:/Users/ziyang/Documents/Stage3_Semester1/BDIC3004J Digital System Design/Lab2/ALU.v|
+!s90 -reportprogress|300|-vlog01compat|-work|work|+incdir+C:/Users/ziyang/Documents/Stage3_Semester1/BDIC3004J Digital System Design/Lab2|C:/Users/ziyang/Documents/Stage3_Semester1/BDIC3004J Digital System Design/Lab2/ALU.v|
+!i113 1
+Z5 o-vlog01compat -work work
+Z6 !s92 -vlog01compat -work work {+incdir+C:/Users/ziyang/Documents/Stage3_Semester1/BDIC3004J Digital System Design/Lab2}
+Z7 tCvgOpt 0
+n@a@l@u
+vLab2
+R1
+!i10b 1
+!s100 =^<F0M;UV9l@4C`h_KU>O0
+If`?1O8GejQZNm6fRTfF963
+R2
+R0
+w1573469053
+8C:/Users/ziyang/Documents/Stage3_Semester1/BDIC3004J Digital System Design/Lab2/Lab2.v
+FC:/Users/ziyang/Documents/Stage3_Semester1/BDIC3004J Digital System Design/Lab2/Lab2.v
+L0 1
+R3
+r1
+!s85 0
+31
+R4
+!s107 C:/Users/ziyang/Documents/Stage3_Semester1/BDIC3004J Digital System Design/Lab2/Lab2.v|
+!s90 -reportprogress|300|-vlog01compat|-work|work|+incdir+C:/Users/ziyang/Documents/Stage3_Semester1/BDIC3004J Digital System Design/Lab2|C:/Users/ziyang/Documents/Stage3_Semester1/BDIC3004J Digital System Design/Lab2/Lab2.v|
+!i113 1
+R5
+R6
+R7
+n@lab2
+vLab2_vlg_tst
+R1
+!i10b 1
+!s100 H_>I=3LNZOo]M1LO^>n=>3
+IZlT[W;JiHR=n<U3]Y?6TC1
+R2
+R0
+w1573552623
+8C:/Users/ziyang/Documents/Stage3_Semester1/BDIC3004J Digital System Design/Lab2/simulation/modelsim/Lab2.vt
+FC:/Users/ziyang/Documents/Stage3_Semester1/BDIC3004J Digital System Design/Lab2/simulation/modelsim/Lab2.vt
+L0 28
+R3
+r1
+!s85 0
+31
+R4
+!s107 C:/Users/ziyang/Documents/Stage3_Semester1/BDIC3004J Digital System Design/Lab2/simulation/modelsim/Lab2.vt|
+!s90 -reportprogress|300|-vlog01compat|-work|work|+incdir+C:/Users/ziyang/Documents/Stage3_Semester1/BDIC3004J Digital System Design/Lab2/simulation/modelsim|C:/Users/ziyang/Documents/Stage3_Semester1/BDIC3004J Digital System Design/Lab2/simulation/modelsim/Lab2.vt|
+!i113 1
+R5
+!s92 -vlog01compat -work work {+incdir+C:/Users/ziyang/Documents/Stage3_Semester1/BDIC3004J Digital System Design/Lab2/simulation/modelsim}
+R7
+n@lab2_vlg_tst
+vRegister
+R1
+!i10b 1
+!s100 Un0T[Xj1Gf46ZEPVS:Nl;1
+IzJGRjJKXO3XJbU0@LP<Tn3
+R2
+R0
+w1573472912
+8C:/Users/ziyang/Documents/Stage3_Semester1/BDIC3004J Digital System Design/Lab2/Register.v
+FC:/Users/ziyang/Documents/Stage3_Semester1/BDIC3004J Digital System Design/Lab2/Register.v
+L0 1
+R3
+r1
+!s85 0
+31
+R4
+!s107 C:/Users/ziyang/Documents/Stage3_Semester1/BDIC3004J Digital System Design/Lab2/Register.v|
+!s90 -reportprogress|300|-vlog01compat|-work|work|+incdir+C:/Users/ziyang/Documents/Stage3_Semester1/BDIC3004J Digital System Design/Lab2|C:/Users/ziyang/Documents/Stage3_Semester1/BDIC3004J Digital System Design/Lab2/Register.v|
+!i113 1
+R5
+R6
+R7
+n@register
+vToggle_Button
+R1
+!i10b 1
+!s100 >T2D@k]h=c=lBik5<DEZ23
+IYbMMOdd6Cb1mVSX4F1=LO2
+R2
+R0
+w1573553054
+8C:/Users/ziyang/Documents/Stage3_Semester1/BDIC3004J Digital System Design/Lab2/Toggle_Button.v
+FC:/Users/ziyang/Documents/Stage3_Semester1/BDIC3004J Digital System Design/Lab2/Toggle_Button.v
+L0 1
+R3
+r1
+!s85 0
+31
+R4
+!s107 C:/Users/ziyang/Documents/Stage3_Semester1/BDIC3004J Digital System Design/Lab2/Toggle_Button.v|
+!s90 -reportprogress|300|-vlog01compat|-work|work|+incdir+C:/Users/ziyang/Documents/Stage3_Semester1/BDIC3004J Digital System Design/Lab2|C:/Users/ziyang/Documents/Stage3_Semester1/BDIC3004J Digital System Design/Lab2/Toggle_Button.v|
+!i113 1
+R5
+R6
+R7
+n@toggle_@button

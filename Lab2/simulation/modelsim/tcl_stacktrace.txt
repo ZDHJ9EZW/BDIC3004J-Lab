@@ -1,0 +1,31 @@
+Tue Oct 29 20:37:52 CST 2019
+Trace back: couldn't open "C:/Users/ziyang/Documents/Stage3_Semester1/BDIC3004J Digital System Design/Lab2/simulation/modelsim/rtl_work/_info": permission denied
+    while executing
+"open $fname r"
+    (procedure "LibraryVisibleDU" line 11)
+    invoked from within
+"LibraryVisibleDU $normal_name "
+    (procedure "LBGetLibraries" line 27)
+    invoked from within
+"LBGetLibraries $parent"
+    (procedure "mtiLibrary::LBGetContents" line 9)
+    invoked from within
+"mtiLibrary::LBGetContents .main_pane.library.interior.cs.body {}"
+    invoked from within
+"$itk_component(tree) insertquery end """
+    (object "::.main_pane.library.interior.cs.body.contents" method "::vsimwidgets::Hierarchy::requery" body line 3)
+    invoked from within
+"requery"
+    (while configuring option "-querycommand" for widget "::.main_pane.library.interior.cs.body.contents")
+    (object "::.main_pane.library.interior.cs.body.contents" method "::itk::Archetype::configure" )
+    invoked from within
+"$parent.contents configure -querycommand "mtiLibrary::LBGetContents $parent %n" "
+    (procedure "LBUpdateContents" line 9)
+    invoked from within
+"LBUpdateContents $parent"
+    (procedure "mtiLibrary::LBUpdateDesignPane" line 12)
+    invoked from within
+"mtiLibrary::LBUpdateDesignPane"
+    ("after" script)
+  <2:C:/intelFPGA/18.0/modelsim_ae/win32aloem/tk8.5/bgerror.tcl:92: ::tkerror {couldn't open "C:/Users/ziyang/Documents/Stage3_Semester1/BDIC3004J Digital System Design/Lab2/simulation/modelsim/rtl_work/_info": permission denied}
+  <1:eval:1: ::tk::dialog::error::bgerror {couldn't open "C:/Users/ziyang/Documents/Stage3_Semester1/BDIC3004J Digital System Design/Lab2/simulation/modelsim/rtl_work/_info": permission denied}

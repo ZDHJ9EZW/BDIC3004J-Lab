@@ -1,0 +1,139 @@
+# Reading C:/intelFPGA/18.0/modelsim_ae/tcl/vsim/pref.tcl
+# do Lab2_run_msim_rtl_verilog.do
+# if {[file exists rtl_work]} {
+# 	vdel -lib rtl_work -all
+# }
+# vlib rtl_work
+# vmap work rtl_work
+# Model Technology ModelSim - Intel FPGA Edition vmap 10.5b Lib Mapping Utility 2016.10 Oct  5 2016
+# vmap work rtl_work 
+# Copying C:/intelFPGA/18.0/modelsim_ae/win32aloem/../modelsim.ini to modelsim.ini
+# Modifying modelsim.ini
+# 
+# vlog -vlog01compat -work work +incdir+C:/Users/ziyang/Documents/Stage3_Semester1/BDIC3004J\ Digital\ System\ Design/Lab2 {C:/Users/ziyang/Documents/Stage3_Semester1/BDIC3004J Digital System Design/Lab2/Lab2.v}
+# Model Technology ModelSim - Intel FPGA Edition vlog 10.5b Compiler 2016.10 Oct  5 2016
+# Start time: 18:05:05 on Nov 12,2019
+# vlog -reportprogress 300 -vlog01compat -work work "+incdir+C:/Users/ziyang/Documents/Stage3_Semester1/BDIC3004J Digital System Design/Lab2" C:/Users/ziyang/Documents/Stage3_Semester1/BDIC3004J Digital System Design/Lab2/Lab2.v 
+# -- Compiling module Lab2
+# 
+# Top level modules:
+# 	Lab2
+# End time: 18:05:05 on Nov 12,2019, Elapsed time: 0:00:00
+# Errors: 0, Warnings: 0
+# vlog -vlog01compat -work work +incdir+C:/Users/ziyang/Documents/Stage3_Semester1/BDIC3004J\ Digital\ System\ Design/Lab2 {C:/Users/ziyang/Documents/Stage3_Semester1/BDIC3004J Digital System Design/Lab2/ALU.v}
+# Model Technology ModelSim - Intel FPGA Edition vlog 10.5b Compiler 2016.10 Oct  5 2016
+# Start time: 18:05:05 on Nov 12,2019
+# vlog -reportprogress 300 -vlog01compat -work work "+incdir+C:/Users/ziyang/Documents/Stage3_Semester1/BDIC3004J Digital System Design/Lab2" C:/Users/ziyang/Documents/Stage3_Semester1/BDIC3004J Digital System Design/Lab2/ALU.v 
+# -- Compiling module ALU
+# 
+# Top level modules:
+# 	ALU
+# End time: 18:05:05 on Nov 12,2019, Elapsed time: 0:00:00
+# Errors: 0, Warnings: 0
+# vlog -vlog01compat -work work +incdir+C:/Users/ziyang/Documents/Stage3_Semester1/BDIC3004J\ Digital\ System\ Design/Lab2 {C:/Users/ziyang/Documents/Stage3_Semester1/BDIC3004J Digital System Design/Lab2/Register.v}
+# Model Technology ModelSim - Intel FPGA Edition vlog 10.5b Compiler 2016.10 Oct  5 2016
+# Start time: 18:05:05 on Nov 12,2019
+# vlog -reportprogress 300 -vlog01compat -work work "+incdir+C:/Users/ziyang/Documents/Stage3_Semester1/BDIC3004J Digital System Design/Lab2" C:/Users/ziyang/Documents/Stage3_Semester1/BDIC3004J Digital System Design/Lab2/Register.v 
+# -- Compiling module Register
+# 
+# Top level modules:
+# 	Register
+# End time: 18:05:05 on Nov 12,2019, Elapsed time: 0:00:00
+# Errors: 0, Warnings: 0
+# vlog -vlog01compat -work work +incdir+C:/Users/ziyang/Documents/Stage3_Semester1/BDIC3004J\ Digital\ System\ Design/Lab2 {C:/Users/ziyang/Documents/Stage3_Semester1/BDIC3004J Digital System Design/Lab2/Toggle_Button.v}
+# Model Technology ModelSim - Intel FPGA Edition vlog 10.5b Compiler 2016.10 Oct  5 2016
+# Start time: 18:05:05 on Nov 12,2019
+# vlog -reportprogress 300 -vlog01compat -work work "+incdir+C:/Users/ziyang/Documents/Stage3_Semester1/BDIC3004J Digital System Design/Lab2" C:/Users/ziyang/Documents/Stage3_Semester1/BDIC3004J Digital System Design/Lab2/Toggle_Button.v 
+# -- Compiling module Toggle_Button
+# 
+# Top level modules:
+# 	Toggle_Button
+# End time: 18:05:05 on Nov 12,2019, Elapsed time: 0:00:00
+# Errors: 0, Warnings: 0
+# 
+# vlog -vlog01compat -work work +incdir+C:/Users/ziyang/Documents/Stage3_Semester1/BDIC3004J\ Digital\ System\ Design/Lab2/simulation/modelsim {C:/Users/ziyang/Documents/Stage3_Semester1/BDIC3004J Digital System Design/Lab2/simulation/modelsim/Lab2.vt}
+# Model Technology ModelSim - Intel FPGA Edition vlog 10.5b Compiler 2016.10 Oct  5 2016
+# Start time: 18:05:05 on Nov 12,2019
+# vlog -reportprogress 300 -vlog01compat -work work "+incdir+C:/Users/ziyang/Documents/Stage3_Semester1/BDIC3004J Digital System Design/Lab2/simulation/modelsim" C:/Users/ziyang/Documents/Stage3_Semester1/BDIC3004J Digital System Design/Lab2/simulation/modelsim/Lab2.vt 
+# -- Compiling module Lab2_vlg_tst
+# 
+# Top level modules:
+# 	Lab2_vlg_tst
+# End time: 18:05:05 on Nov 12,2019, Elapsed time: 0:00:00
+# Errors: 0, Warnings: 0
+# 
+# vsim -t 1ps -L altera_ver -L lpm_ver -L sgate_ver -L altera_mf_ver -L altera_lnsim_ver -L cycloneive_ver -L rtl_work -L work -voptargs="+acc"  Lab2_vlg_tst
+# vsim -t 1ps -L altera_ver -L lpm_ver -L sgate_ver -L altera_mf_ver -L altera_lnsim_ver -L cycloneive_ver -L rtl_work -L work -voptargs=""+acc"" Lab2_vlg_tst 
+# Start time: 18:05:05 on Nov 12,2019
+# //  ModelSim - Intel FPGA Edition 10.5b Oct  5 2016
+# //
+# //  Copyright 1991-2016 Mentor Graphics Corporation
+# //  All Rights Reserved.
+# //
+# //  ModelSim - Intel FPGA Edition and its associated documentation contain trade
+# //  secrets and commercial or financial information that are the property of
+# //  Mentor Graphics Corporation and are privileged, confidential,
+# //  and exempt from disclosure under the Freedom of Information Act,
+# //  5 U.S.C. Section 552. Furthermore, this information
+# //  is prohibited from disclosure under the Trade Secrets Act,
+# //  18 U.S.C. Section 1905.
+# //
+# Loading work.Lab2_vlg_tst
+# Loading work.Lab2
+# Loading work.ALU
+# Loading work.Register
+# Loading work.Toggle_Button
+# 
+# add wave *
+# view structure
+# .main_pane.structure.interior.cs.body.struct
+# view signals
+# .main_pane.objects.interior.cs.body.tree
+# run 20 sec
+run
+restart
+add wave -position insertpoint  \
+sim:/Lab2_vlg_tst/i1/M2/Load
+run
+run
+run
+run
+run
+run
+run
+run
+run
+run
+run
+run
+run
+run
+run
+run
+run
+run
+run
+run
+run
+run
+run
+run
+run
+run
+run
+run
+run
+run
+run
+run
+run
+run
+run
+run
+run
+run
+run
+run
+# WARNING: No extended dataflow license exists
+# End time: 19:55:34 on Nov 12,2019, Elapsed time: 1:50:29
+# Errors: 0, Warnings: 1
