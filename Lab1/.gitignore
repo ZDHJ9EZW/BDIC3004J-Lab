@@ -41,7 +41,7 @@
 # software binary files
 
 /*
-/simulation/modelsim
+!/simulation
 !/*.gitignore
 !**/*.vt
 ##
@@ -56,6 +56,7 @@
 !**/class.ptf
 !*.tbd
 !*.sof
+!*.vt
 ## tbd
 
 !*.tcl
