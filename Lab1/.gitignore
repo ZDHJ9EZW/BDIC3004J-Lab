@@ -41,8 +41,9 @@
 # software binary files
 
 /*
+/simulation/modelsim
 !/*.gitignore
-!/simulation
+!**/*.vt
 ##
 !*.qpf
 !*.qsf
