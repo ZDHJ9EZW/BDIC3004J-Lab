@@ -58,17 +58,40 @@ initial
 begin                                                  
 // code that executes only once                        
 // insert code here --> begin                          
-                                                       
+	clk = 0;
+	wheel_clk = 0;
+	stop = 0;
+	start = 1;
+	pause = 0;
+	forever #50 clk = ~clk;
 // --> end                                             
 $display("Running testbench");                       
-end                                                    
+end
+
+initial
+begin
+	#4000 stop = 1;
+			start = 0;
+	#8000 stop = 0;
+			start = 1;
+			pause = 1;
+end
+
 always                                                 
 // optional sensitivity list                           
 // @(event1 or event2 or .... eventn)                  
 begin                                                  
 // code executes for every event on sensitivity list   
 // insert code here --> begin                          
-                                                       
+	for(i=0;i<10;i=i+1)
+		begin
+			#100 wheel_clk = ~wheel_clk;
+		end
+	
+	for(i=0;i<20;i=i+1)
+		begin
+			#50 wheel_clk = ~wheel_clk;
+		end
 @eachvec;                                              
 // --> end                                             
 end                                                    
