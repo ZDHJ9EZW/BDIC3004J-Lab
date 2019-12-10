@@ -1,0 +1,88 @@
+# Reading C:/intelFPGA/18.0/modelsim_ae/tcl/vsim/pref.tcl
+# do Lab3_run_msim_rtl_verilog.do
+# if {[file exists rtl_work]} {
+# 	vdel -lib rtl_work -all
+# }
+# vlib rtl_work
+# vmap work rtl_work
+# Model Technology ModelSim - Intel FPGA Edition vmap 10.5b Lib Mapping Utility 2016.10 Oct  5 2016
+# vmap work rtl_work 
+# Copying C:/intelFPGA/18.0/modelsim_ae/win32aloem/../modelsim.ini to modelsim.ini
+# Modifying modelsim.ini
+# 
+# vlog -vlog01compat -work work +incdir+C:/Users/ziyang/Documents/Stage3_Semester1/BDIC3004J\ Digital\ System\ Design/szxtsjsy/Lab3 {C:/Users/ziyang/Documents/Stage3_Semester1/BDIC3004J Digital System Design/szxtsjsy/Lab3/Lab3.v}
+# Model Technology ModelSim - Intel FPGA Edition vlog 10.5b Compiler 2016.10 Oct  5 2016
+# Start time: 21:41:10 on Dec 08,2019
+# vlog -reportprogress 300 -vlog01compat -work work "+incdir+C:/Users/ziyang/Documents/Stage3_Semester1/BDIC3004J Digital System Design/szxtsjsy/Lab3" C:/Users/ziyang/Documents/Stage3_Semester1/BDIC3004J Digital System Design/szxtsjsy/Lab3/Lab3.v 
+# -- Compiling module Lab3
+# 
+# Top level modules:
+# 	Lab3
+# End time: 21:41:10 on Dec 08,2019, Elapsed time: 0:00:00
+# Errors: 0, Warnings: 0
+# vlog -vlog01compat -work work +incdir+C:/Users/ziyang/Documents/Stage3_Semester1/BDIC3004J\ Digital\ System\ Design/szxtsjsy/Lab3 {C:/Users/ziyang/Documents/Stage3_Semester1/BDIC3004J Digital System Design/szxtsjsy/Lab3/decoder.v}
+# Model Technology ModelSim - Intel FPGA Edition vlog 10.5b Compiler 2016.10 Oct  5 2016
+# Start time: 21:41:10 on Dec 08,2019
+# vlog -reportprogress 300 -vlog01compat -work work "+incdir+C:/Users/ziyang/Documents/Stage3_Semester1/BDIC3004J Digital System Design/szxtsjsy/Lab3" C:/Users/ziyang/Documents/Stage3_Semester1/BDIC3004J Digital System Design/szxtsjsy/Lab3/decoder.v 
+# -- Compiling module decoder
+# 
+# Top level modules:
+# 	decoder
+# End time: 21:41:10 on Dec 08,2019, Elapsed time: 0:00:00
+# Errors: 0, Warnings: 0
+# vlog -vlog01compat -work work +incdir+C:/Users/ziyang/Documents/Stage3_Semester1/BDIC3004J\ Digital\ System\ Design/szxtsjsy/Lab3 {C:/Users/ziyang/Documents/Stage3_Semester1/BDIC3004J Digital System Design/szxtsjsy/Lab3/taxi.v}
+# Model Technology ModelSim - Intel FPGA Edition vlog 10.5b Compiler 2016.10 Oct  5 2016
+# Start time: 21:41:10 on Dec 08,2019
+# vlog -reportprogress 300 -vlog01compat -work work "+incdir+C:/Users/ziyang/Documents/Stage3_Semester1/BDIC3004J Digital System Design/szxtsjsy/Lab3" C:/Users/ziyang/Documents/Stage3_Semester1/BDIC3004J Digital System Design/szxtsjsy/Lab3/taxi.v 
+# -- Compiling module taxi
+# 
+# Top level modules:
+# 	taxi
+# End time: 21:41:10 on Dec 08,2019, Elapsed time: 0:00:00
+# Errors: 0, Warnings: 0
+# 
+# vlog -vlog01compat -work work +incdir+C:/Users/ziyang/Documents/Stage3_Semester1/BDIC3004J\ Digital\ System\ Design/szxtsjsy/Lab3/simulation/modelsim {C:/Users/ziyang/Documents/Stage3_Semester1/BDIC3004J Digital System Design/szxtsjsy/Lab3/simulation/modelsim/Lab3.vt}
+# Model Technology ModelSim - Intel FPGA Edition vlog 10.5b Compiler 2016.10 Oct  5 2016
+# Start time: 21:41:10 on Dec 08,2019
+# vlog -reportprogress 300 -vlog01compat -work work "+incdir+C:/Users/ziyang/Documents/Stage3_Semester1/BDIC3004J Digital System Design/szxtsjsy/Lab3/simulation/modelsim" C:/Users/ziyang/Documents/Stage3_Semester1/BDIC3004J Digital System Design/szxtsjsy/Lab3/simulation/modelsim/Lab3.vt 
+# -- Compiling module Lab3_vlg_tst
+# ** Warning: C:/Users/ziyang/Documents/Stage3_Semester1/BDIC3004J Digital System Design/szxtsjsy/Lab3/simulation/modelsim/Lab3.vt(65): (vlog-2597) '3600000000' is being treated as 32-bit signed integer and will overflow.
+# 
+# Top level modules:
+# 	Lab3_vlg_tst
+# End time: 21:41:10 on Dec 08,2019, Elapsed time: 0:00:00
+# Errors: 0, Warnings: 1
+# 
+# vsim -t 1ps -L altera_ver -L lpm_ver -L sgate_ver -L altera_mf_ver -L altera_lnsim_ver -L cycloneive_ver -L rtl_work -L work -voptargs="+acc"  Lab3_vlg_tst
+# vsim -t 1ps -L altera_ver -L lpm_ver -L sgate_ver -L altera_mf_ver -L altera_lnsim_ver -L cycloneive_ver -L rtl_work -L work -voptargs=""+acc"" Lab3_vlg_tst 
+# Start time: 21:41:11 on Dec 08,2019
+# //  ModelSim - Intel FPGA Edition 10.5b Oct  5 2016
+# //
+# //  Copyright 1991-2016 Mentor Graphics Corporation
+# //  All Rights Reserved.
+# //
+# //  ModelSim - Intel FPGA Edition and its associated documentation contain trade
+# //  secrets and commercial or financial information that are the property of
+# //  Mentor Graphics Corporation and are privileged, confidential,
+# //  and exempt from disclosure under the Freedom of Information Act,
+# //  5 U.S.C. Section 552. Furthermore, this information
+# //  is prohibited from disclosure under the Trade Secrets Act,
+# //  18 U.S.C. Section 1905.
+# //
+# Loading work.Lab3_vlg_tst
+# Loading work.Lab3
+# Loading work.taxi
+# Loading work.decoder
+# ** Warning: (vsim-3015) C:/Users/ziyang/Documents/Stage3_Semester1/BDIC3004J Digital System Design/szxtsjsy/Lab3/Lab3.v(12): [PCDPC] - Port size (1) does not match connection size (13) for port 'stop'. The port definition is at: C:/Users/ziyang/Documents/Stage3_Semester1/BDIC3004J Digital System Design/szxtsjsy/Lab3/decoder.v(5).
+#    Time: 0 ps  Iteration: 0  Instance: /Lab3_vlg_tst/i1/D File: C:/Users/ziyang/Documents/Stage3_Semester1/BDIC3004J Digital System Design/szxtsjsy/Lab3/decoder.v
+# ** Warning: (vsim-3015) C:/Users/ziyang/Documents/Stage3_Semester1/BDIC3004J Digital System Design/szxtsjsy/Lab3/Lab3.v(12): [PCDPC] - Port size (13) does not match connection size (1) for port 'distance_in'. The port definition is at: C:/Users/ziyang/Documents/Stage3_Semester1/BDIC3004J Digital System Design/szxtsjsy/Lab3/decoder.v(7).
+#    Time: 0 ps  Iteration: 0  Instance: /Lab3_vlg_tst/i1/D File: C:/Users/ziyang/Documents/Stage3_Semester1/BDIC3004J Digital System Design/szxtsjsy/Lab3/decoder.v
+# 
+# add wave *
+# view structure
+# .main_pane.structure.interior.cs.body.struct
+# view signals
+# .main_pane.objects.interior.cs.body.tree
+# run -all
+# End time: 21:41:43 on Dec 08,2019, Elapsed time: 0:00:32
+# Errors: 0, Warnings: 2
