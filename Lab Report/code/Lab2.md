@@ -8,13 +8,6 @@ Use the simple ALU from the previous experiment and write other circuits to comp
 
 ## Circuit Diagram
 
-### Steps to Generate Circuit Diagram
-
-Step1: Processing > start > Analysis & Elaboration
-Step2: Tools > Netlist viewer > RTL viewer 
-
-### Diagram
-
 ![image-20191208104744250](Lab2.assets/image-20191208104744250.png)
 
 ## Code and Comments

@@ -4,14 +4,17 @@
 
 This lab will design a taxi meter. The detailed functions are following.
 
-The initial money is 6 yuan.
+The starting price is 13 yuan, and the first three kilometres are the starting price range. The distance cost is not calculated separately, but the low-speed driving fee is still charged.
 
-When the distance is bigger than 3km, the money adds 1.2yuan every kilometre. 
+When the distance is bigger than 3km, the money adds 2.3 yuan every kilometre. 
 
-When the money is bigger than 20yuan, the money of every kilometre added 50%, i.e.1.8yuna /km.
+When the money is bigger than 50 yuan, the money of every kilometre becomes 3.3 yuan per kilometre.
 
-There are three states. ‘start’, ‘stop’ and ‘pause’. ‘start’ means money sets to initial state and distance increases from zero. ‘stop’ means that money return back to initial state and distance is eliminated. When the car pauses, do not count money and distance for this time.
+If the taxi in low speed status, every 5 minutes will adds 2.3 yuan to total cost.
 
-The car has 4 different blocks of speed.
+There are three states. ‘start’, ‘stop’ and ‘pause’. ‘start’ means money sets to initial state and distance increases from zero. ‘stop’ means that money and distance is becomes zero. When the car pauses, do not count money and distance for this time.
 
-After simulations in the computer, the results ought to be showed in the hardware requirements: show the varying values in the eight 7-segments.
+The distance is showing on 5 7-segment LEDs, which has two decimal places and money showing on 4 7-segment LEDs which has one decimal place.
+
+## Circuit Diagram
+
