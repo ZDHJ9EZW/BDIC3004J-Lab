@@ -12,7 +12,7 @@ Use the simple ALU from the previous experiment and write other circuits to comp
 
 ## Code and Comments
 
-### Top Model - Lab2.v
+### Top Module - Lab2.v
 
 ```verilog
 module Lab2 (

@@ -18,3 +18,27 @@ The distance is showing on 5 7-segment LEDs, which has two decimal places and mo
 
 ## Circuit Diagram
 
+
+
+## Code and Comments
+
+### Top Model - Lab3.v
+
+
+
+### Control Module - taxi_control.v
+
+
+
+### Calculate Distance Module - taxi_distance_ptime.v
+
+
+
+### Price calculation Module - taxi_money.v
+
+
+
+### LED Module - LED2s.v
+
+## Testbench and Wave
+
