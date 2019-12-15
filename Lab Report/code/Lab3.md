@@ -234,18 +234,18 @@ All information changes are correctly displayed on the waveform.
 
 ```verilog
 module taxi_distance_ptime(high_speed, low_speed, pause_state, stop_state, wheel_clk, clk, distance, low_time);
-input high_speed, low_speed, pause_state, stop_state, wheel_clk, clk;
-output reg [31:0] low_time, distance;
+	input high_speed, low_speed, pause_state, stop_state, wheel_clk, clk;
+	output reg [16:0] low_time, distance;
+	
+	reg [4:0] wheel_counter2;
+	reg [19:0] clk_counter2; //low speed time
 
-reg [4:0] wheel_counter2;
-reg [10:0] clk_counter2; //low speed time
-
-initial begin
-	low_time = 0;
-	distance = 0;
-	wheel_counter2 = 0;
-	clk_counter2 = 0;
-end
+	initial begin
+		low_time = 0;
+		distance = 0;
+		wheel_counter2 = 0;
+		clk_counter2 = 0;
+	end
 ```
 
 This module named `taxi_distance_ptime`, has six input ports and two output ports.
@@ -320,8 +320,8 @@ reg pause_state;
 reg stop_state;
 reg wheel_clk;
 // wires                                               
-wire [31:0]  distance;
-wire [31:0]  low_time;
+wire [16:0]  distance;
+wire [16:0]  low_time;
 
 // assign statements (if any)                          
 taxi_distance_ptime i1 (

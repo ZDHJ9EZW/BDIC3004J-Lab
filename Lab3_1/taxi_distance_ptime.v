@@ -1,9 +1,9 @@
 module taxi_distance_ptime(high_speed, low_speed, pause_state, stop_state, wheel_clk, clk, distance, low_time);
 	input high_speed, low_speed, pause_state, stop_state, wheel_clk, clk;
-	output reg [31:0] low_time, distance;
+	output reg [16:0] low_time, distance;
 	
 	reg [4:0] wheel_counter2;
-	reg [10:0] clk_counter2; //low speed time
+	reg [19:0] clk_counter2; //low speed time
 
 	initial begin
 		low_time = 0;
@@ -38,7 +38,7 @@ module taxi_distance_ptime(high_speed, low_speed, pause_state, stop_state, wheel
 		end
 		else begin
 			if(low_speed) clk_counter2 = clk_counter2 + 1;
-			low_time = clk_counter2/100; //100个cycle是1分钟
+			low_time = clk_counter2/30000; //30000个cycle是5分钟
 		end
 	end
 endmodule

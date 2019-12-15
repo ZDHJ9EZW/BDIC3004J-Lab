@@ -2,9 +2,9 @@ module taxi_control(clk, wheel_clk, stop, start, pause, low_speed, high_speed, p
 	input clk, wheel_clk, stop, start, pause;
 	output reg low_speed, high_speed, pause_state, stop_state;
 	
-	reg [4:0]clk_counter, wheel_counter;
+	reg [6:0]clk_counter, wheel_counter;
 	reg control;//判断是否经过固定时间
-	reg [4:0]judge;
+	reg [6:0]judge;
 
 	initial begin
 		clk_counter = 0;
@@ -16,7 +16,7 @@ module taxi_control(clk, wheel_clk, stop, start, pause, low_speed, high_speed, p
 	always@(posedge clk)begin
 		if(control) control = 0;
 		clk_counter = clk_counter + 1;
-		if(clk_counter == 10)begin 
+		if(clk_counter == 100)begin 
 			control = 1;
 			clk_counter = 0;
 			judge = wheel_counter;

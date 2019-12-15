@@ -37,8 +37,8 @@ reg pause_state;
 reg stop_state;
 reg wheel_clk;
 // wires                                               
-wire [31:0]  distance;
-wire [31:0]  low_time;
+wire [16:0]  distance;
+wire [16:0]  low_time;
 
 // assign statements (if any)                          
 taxi_distance_ptime i1 (
