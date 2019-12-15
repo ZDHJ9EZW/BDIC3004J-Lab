@@ -1,5 +1,9 @@
 # Lab 1 Report - 8-bit Simple ALU
 
+[TOC]
+
+
+
 ## Lab Targets
 
 Design an 8-bit Arithmetic Logical Unit (ALU), based on the method of top-down module system design.
@@ -140,6 +144,10 @@ Then, we tested each opcode evey 20 ps.
 ![image-20191126212121321](Lab1.assets/image-20191126212121321.png)
 
 We can seen the output result are we expected.
+
+## Resource Allocation
+
+Shi Bo: All the Lab 1 is finished by Shi Bo.
 
 ## Summary
 

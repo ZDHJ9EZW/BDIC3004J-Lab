@@ -19,17 +19,15 @@ module taxi_control(clk, wheel_clk, stop, start, pause, low_speed, high_speed, p
 		if(clk_counter == 10)begin 
 			control = 1;
 			clk_counter = 0;
+			judge = wheel_counter;
 		end	
 		
 	end
 
 
-	always@(posedge wheel_clk)begin
-		if(!control) wheel_counter = wheel_counter +1 ;
-		else begin
-			judge = wheel_counter;
-			wheel_counter = 0;
-		end
+	always@(posedge wheel_clk, posedge control)begin
+		if(control) wheel_counter = 0;
+		else wheel_counter = wheel_counter +1 ;
 	end
 
 	always@(posedge clk)begin
@@ -40,7 +38,7 @@ module taxi_control(clk, wheel_clk, stop, start, pause, low_speed, high_speed, p
 			stop_state = 1;
 		end
 		else if(start)begin
-		 stop_state = 0;
+			stop_state = 0;
 			if(pause)begin
 				high_speed = 0;
 				low_speed = 0;
@@ -58,8 +56,5 @@ module taxi_control(clk, wheel_clk, stop, start, pause, low_speed, high_speed, p
 				end
 			end
 		end
-
-
 	end
 endmodule
-

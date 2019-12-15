@@ -1,0 +1,45 @@
+`timescale 1ns/10ps
+module LED2s_test();
+reg [16:0] distance_out, money;
+reg clk2,clk;
+wire [8:0] scan; 
+wire dp;
+wire [6:0]display; 
+LED2s L1 (distance_out, money, display, scan, clk2, clk, dp);
+
+always begin
+	#50 clk = ~ clk;
+end
+
+always begin
+	#2 clk2 = ~ clk2;
+end
+
+initial begin
+	clk = 0;
+	clk2 = 0;
+	distance_out = 12345;
+	money = 6666;
+	#200 distance_out = 78965;
+	money = 5555;
+	#350 $finish;
+end
+
+initial $monitor
+($time,
+"current distance: %d  current money: %d\n                    current LED: %b    current value: %b ",
+distance_out, money, scan, display);
+
+endmodule
+/*
+parameter BLANK = 7'b0000000;
+parameter ZERO  = 7'b1111110;    
+parameter ONE   = 7'b0110000;    
+parameter TWO   = 7'b1101101;    
+parameter THREE = 7'b1111001;    
+parameter FOUR  = 7'b0110011;    
+parameter FIVE  = 7'b1011011;    
+parameter SIX   = 7'b1011111;    
+parameter SEVEN = 7'b1110000;    
+parameter EIGHT = 7'b1111111;    
+parameter NINE  = 7'b1111011;*/

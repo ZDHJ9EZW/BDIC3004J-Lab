@@ -46,7 +46,7 @@ taxi_distance_ptime i1 (
 	.clk(clk),
 	.distance(distance),
 	.high_speed(high_speed),
-	.low_speed(low _speed),
+	.low_speed(low_speed),
 	.low_time(low_time),
 	.pause_state(pause_state),
 	.stop_state(stop_state),

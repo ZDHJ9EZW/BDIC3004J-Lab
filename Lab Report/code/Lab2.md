@@ -1,5 +1,9 @@
 # Lab 2 Report -  Design and Simulation of ALU with sequential machine controlled datapath
 
+[TOC]
+
+
+
 ## Lab Targets
 
 Design an 8-bit Arithmetic Logical Unit (ALU), based on the method of top-down module system design.
@@ -10,9 +14,9 @@ Use the simple ALU from the previous experiment and write other circuits to comp
 
 ![image-20191208104744250](Lab2.assets/image-20191208104744250.png)
 
-## Code and Comments
+## Code and Testbench
 
-### Top Module - Lab2.v
+### Top Module
 
 ```verilog
 module Lab2 (
@@ -42,11 +46,11 @@ This model named Lab1, has five input port and four output ports. Which are
 6. clk: A clock signal.
 7. reset: Hardware reset.
 
-### ALU - Lab1.v
+### ALU Design
 
 This part using the same design in Lab 1.
 
-### Register - Register.v
+### Register Design
 
 ```verilog
 module Register (output reg [3:0] Reg_out, input [3:0] Data, input Load, clk, reset);
@@ -74,7 +78,9 @@ Line 4: If **reset** signal is HIGH, then clears the register. In our implementa
 
 Line 5 to Line 7: If **reset** signal is LOW and **Load** signal is HIGH, sending input data to Reg_out. According to behaver of Register model are controlled by clock, the data will keeping in one clock cycle.
 
-### Toggle Bottom - Toggle_Bottom.v
+### Toggle Bottom Design and Testbench
+
+#### Toggle Bottom Design
 
 ```verilog
 module Toggle_Button (output reg Load, Led_idle, Led_wait, Led_rdy, input Go, clk, reset);
@@ -138,9 +144,66 @@ Line 7 to Line 14: This part we using `if...else...` statements to control the s
 
 Line 17 to Line 39: This part is a `case` statement. Cooperating with state register in Line 2. For each state, this part statements used for control output ports.
 
-## Testbench and Wave
+#### Toggle Bottom Testbench
 
-### Testbench - Lab2.vt
+```verilog
+`timescale 1 ps/ 1 ps
+module Toggle_Button_vlg_tst();
+// constants                                           
+// general purpose registers
+reg eachvec;
+// test vector input registers
+reg Go;
+reg clk;
+reg reset;
+// wires                                               
+wire Led_idle;
+wire Led_rdy;
+wire Led_wait;
+wire Load;
+
+// assign statements (if any)                          
+Toggle_Button i1 (
+// port map - connection between master ports and signals/registers   
+	.Go(Go),
+	.Led_idle(Led_idle),
+	.Led_rdy(Led_rdy),
+	.Led_wait(Led_wait),
+	.Load(Load),
+	.clk(clk),
+	.reset(reset)
+);
+initial                                                
+begin                                                  
+// code that executes only once                        
+// insert code here --> begin                          
+	reset = 1'b0;
+	clk = 1'b0;
+	forever #5 clk = ~clk;
+// --> end                                             
+$display("Running testbench");                       
+end
+                                            
+always                                                 
+// optional sensitivity list                           
+// @(event1 or event2 or .... eventn)                  
+begin                                                  
+// code executes for every event on sensitivity list   
+// insert code here --> begin                          
+#5 Go = 1'b1;
+#50 Go = 1'b0;
+#70 Go = 1'b1;
+#80 Go = 1'b0;
+@eachvec;                                              
+// --> end                                             
+end                                                    
+endmodule
+```
+
+Check the value of the three external LED lights and the Load signal to determine the status of this module. From the figure we can see that the change of the state of this module is in line with our expected ASM diagram.![image-20191215193044343](Lab2.assets/image-20191215193044343.png)
+
+### Top Module Testbench
+
 
 ```verilog
 module Lab2_vlg_tst();
@@ -218,7 +281,7 @@ end
 endmodule
 ```
 
-### Wave
+
 
 ![image-20191208221523847](Lab2.assets/image-20191208221523847.png)
 
@@ -238,10 +301,26 @@ $$
 
 We can seen the output is 00000, it is correct.
 
-#### Reset function
+The, we test reset function:
 
 ![image-20191208224347200](Lab2.assets/image-20191208224347200.png)
 
 From the wave figure we can seen after **reset** is HIGH, in next positive edge of clock, **Reg_out** is 0000, **Load** is LOW, **Led_idle** is HIGH, and **ALU_out** is 00000.
 
 This result is our expected.
+
+## Resource Allocation
+
+Liu Ziyang: Lab Targets, Circut Diagram, Toggle Bottom module design, and Summary.
+
+Xu Zhikun: Top Module Design and Testbench.
+
+Zhu Yanxing: Top Module Design and Toggle Botton Testbench.
+
+Chen Dingrui: Register Design and Testbench.
+
+Gong Chen: Toggle Bottom module design, Top Module Testbench.
+
+## Summary
+
+In this lab, we design an ALU and its data channel by mastering the top-down module design method using Verilog HDL and the Quartus II EDA platform for design input, compilation, simulation of the whole process.

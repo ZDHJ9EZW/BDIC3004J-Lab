@@ -1,0 +1,36 @@
+`timescale 1ns/1ns
+module t_taxi_money();
+	reg clk, stop_state;
+	reg [16:0] distance, low_time;
+	wire [16:0] distance_out, money;
+	parameter clkcycle = 1'd4;	
+
+	taxi_money u1(.clk(clk), .stop_state(stop_state), .distance(distance), .low_time(low_time), .distance_out(distance_out), .money(money));
+
+	
+	initial begin
+		distance = 32'b0;
+		low_time = 32'b0;
+		stop_state = 1'b0;
+		clk = 0;
+	end	
+	always #4 clk = ~clk;
+	
+	initial #100 $finish;
+	
+	initial begin	
+		#10 distance = 17'd2000;
+		#10 distance = 17'd3500;
+		#10 low_time = 17'd4;
+		#10 distance = 17'd13000;
+		#10 distance = 17'd16000;
+		#10 distance = 17'd20000;
+		#10 low_time = 17'd6;
+		#10 stop_state = 1'b1;
+		
+	end
+	initial $monitor($time," current distance: %d  currnet money: %d",distance, money);
+	
+endmodule
+
+	
