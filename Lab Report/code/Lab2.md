@@ -324,3 +324,308 @@ Gong Chen: Toggle bottom module design and top module testbench.
 ## Summary
 
 In this lab, we design an ALU and its data channel by mastering the top-down module design method using Verilog HDL and the Quartus II EDA platform for design input, compilation, simulation of the whole process.
+
+# Source Code
+
+## Top Module - Lab2.v
+
+```verilog
+module Lab2 (
+	output [4:0] ALU_out,
+	output Led_idle, Led_wait, Led_rdy,
+	input [3:0] Data,
+	input [2:0] Opcode,
+	input Go,
+	input clk,reset
+);
+	wire [3:0] Reg_out;
+	
+	ALU				M1 (ALU_out, Data, Reg_out, Opcode);
+	Register			M2 (Reg_out, Data, Load, clk, reset);
+	Toggle_Button	M3 (Load, Led_idle, Led_wait, Led_rdy, Go, clk, reset);
+	
+endmodule
+
+```
+
+## ALU - ALU.v
+
+```verilog
+module ALU (output reg [4:0] ALU_out, input [3:0] Data_A, Data_B, input [2:0] Opcode);
+	parameter	Add		= 3'b000,	//	A + B
+					Subtract	= 3'b001,	//	A - B
+					Or_AB		= 3'b010,	//	A | B
+					And_AB	= 3'b011,	//	A & B
+					Not_A		= 3'b100,	//	~ A
+					Exor		= 3'b101,	//	A ^ B
+					Exnor		= 3'b110,	//	A ~ ^ B
+					Ror_A		= 3'b111;	//	| A
+
+	always@(*)
+	
+	case(Opcode)
+		Add:			ALU_out =  Data_A + Data_B;
+		Subtract:	ALU_out =  Data_A - Data_B;
+		Or_AB:		ALU_out =  Data_A | Data_B;
+		And_AB:		ALU_out =  Data_A & Data_B;
+		Not_A:		ALU_out =  ~ Data_A;
+		Exor:			ALU_out =  Data_A ^ Data_B;
+		Exnor:		ALU_out =  Data_A ~^ Data_B;
+		Ror_A:		ALU_out <= {Data_A[0],Data_A[3:1]};
+	endcase
+endmodule
+```
+
+## Register - Register.v
+
+```verilog
+module Register (output reg [3:0] Reg_out, input [3:0] Data, input Load, clk, reset);
+	always @(posedge clk) begin
+	
+		if(reset) Reg_out = 4'b0;
+		else begin
+			if(Load) Reg_out <= Data ;
+		end
+	end
+endmodule
+
+```
+
+## Toggle Bottom - Toggle_Button.v
+
+```verilog
+module Toggle_Button (output reg Load, Led_idle, Led_wait, Led_rdy, input Go, clk, reset);
+	reg [1:0] state = 0;
+	
+	always @(posedge clk) begin
+	
+		if(reset) state = 0;
+		else begin
+			if(Go && state == 0) state = 2'b1;
+			else if(state == 1) state = 2'b10;
+			else if(!Go && state == 2'b10) state = 2'b11; 
+			else if (Go && state == 2'b11) begin
+				state = 2'b1;
+				Led_rdy = 0;
+			end
+		end
+
+		case(state)
+			2'b0:				begin
+									Led_idle = 1;
+									Led_wait = 0;
+									Led_rdy = 0;
+									Load = 0;
+								end
+
+			2'b1: 			begin
+									Led_idle = 0;
+									Load = 1;
+								end
+
+			2'b10:			begin
+									Load = 0;
+									Led_wait = 1;
+								end
+
+			2'b11:			begin
+									Led_wait = 0;
+									Led_rdy = 1;
+								end
+		endcase
+	end
+endmodule
+
+```
+
+## Toggle Bottom Test Bench
+
+```verilog
+// Copyright (C) 2018  Intel Corporation. All rights reserved.
+// Your use of Intel Corporation's design tools, logic functions 
+// and other software and tools, and its AMPP partner logic 
+// functions, and any output files from any of the foregoing 
+// (including device programming or simulation files), and any 
+// associated documentation or information are expressly subject 
+// to the terms and conditions of the Intel Program License 
+// Subscription Agreement, the Intel Quartus Prime License Agreement,
+// the Intel FPGA IP License Agreement, or other applicable license
+// agreement, including, without limitation, that your use is for
+// the sole purpose of programming logic devices manufactured by
+// Intel and sold by Intel or its authorized distributors.  Please
+// refer to the applicable agreement for further details.
+
+// *****************************************************************************
+// This file contains a Verilog test bench template that is freely editable to  
+// suit user's needs .Comments are provided in each section to help the user    
+// fill out necessary details.                                                  
+// *****************************************************************************
+// Generated on "10/29/2019 20:29:16"
+                                                                                
+// Verilog Test Bench template for design : Toggle_Button
+// 
+// Simulation tool : ModelSim-Altera (Verilog)
+// 
+
+`timescale 1 ps/ 1 ps
+module Toggle_Button_vlg_tst();
+// constants                                           
+// general purpose registers
+reg eachvec;
+// test vector input registers
+reg Go;
+reg clk;
+reg reset;
+// wires                                               
+wire Led_idle;
+wire Led_rdy;
+wire Led_wait;
+wire Load;
+
+// assign statements (if any)                          
+Toggle_Button i1 (
+// port map - connection between master ports and signals/registers   
+	.Go(Go),
+	.Led_idle(Led_idle),
+	.Led_rdy(Led_rdy),
+	.Led_wait(Led_wait),
+	.Load(Load),
+	.clk(clk),
+	.reset(reset)
+);
+initial                                                
+begin                                                  
+// code that executes only once                        
+// insert code here --> begin                          
+	reset = 1'b0;
+	clk = 1'b0;
+	forever #5 clk = ~clk;
+// --> end                                             
+$display("Running testbench");                       
+end
+                                            
+always                                                 
+// optional sensitivity list                           
+// @(event1 or event2 or .... eventn)                  
+begin                                                  
+// code executes for every event on sensitivity list   
+// insert code here --> begin                          
+#5 Go = 1'b1;
+#50 Go = 1'b0;
+#70 Go = 1'b1;
+#80 Go = 1'b0;
+@eachvec;                                              
+// --> end                                             
+end                                                    
+endmodule
+
+
+```
+
+## Top Module Test Bench
+
+```verilog
+// Copyright (C) 2018  Intel Corporation. All rights reserved.
+// Your use of Intel Corporation's design tools, logic functions 
+// and other software and tools, and its AMPP partner logic 
+// functions, and any output files from any of the foregoing 
+// (including device programming or simulation files), and any 
+// associated documentation or information are expressly subject 
+// to the terms and conditions of the Intel Program License 
+// Subscription Agreement, the Intel Quartus Prime License Agreement,
+// the Intel FPGA IP License Agreement, or other applicable license
+// agreement, including, without limitation, that your use is for
+// the sole purpose of programming logic devices manufactured by
+// Intel and sold by Intel or its authorized distributors.  Please
+// refer to the applicable agreement for further details.
+
+// *****************************************************************************
+// This file contains a Verilog test bench template that is freely editable to  
+// suit user's needs .Comments are provided in each section to help the user    
+// fill out necessary details.                                                  
+// *****************************************************************************
+// Generated on "11/11/2019 20:11:36"
+                                                                                
+// Verilog Test Bench template for design : Lab2
+// 
+// Simulation tool : ModelSim-Altera (Verilog)
+// 
+
+`timescale 1 ps/ 1 ps
+module Lab2_vlg_tst();
+// constants                                           
+// general purpose registers
+reg eachvec;
+// test vector input registers
+reg [3:0] Data;
+reg Go;
+reg [2:0] Opcode;
+reg clk;
+reg reset;
+reg count;
+// wires                                               
+wire [4:0]  ALU_out;
+wire Led_idle;
+wire Led_rdy;
+wire Led_wait;
+
+// assign statements (if any)                          
+Lab2 i1 (
+// port map - connection between master ports and signals/registers   
+	.ALU_out(ALU_out),
+	.Data(Data),
+	.Go(Go),
+	.Led_idle(Led_idle),
+	.Led_rdy(Led_rdy),
+	.Led_wait(Led_wait),
+	.Opcode(Opcode),
+	.clk(clk),
+	.reset(reset)
+);
+initial                                                
+begin                                                  
+// code that executes only once                        
+// insert code here --> begin                          
+
+	clk = 0;
+	
+	Go = 0;
+	reset =0;
+	Data = 4'b0;
+	Opcode = 3'b0;
+
+	forever #5 clk = ~clk;
+		
+// --> end                                             
+$display("Running testbench");                       
+end                                                    
+
+initial begin
+#200 reset = 1;
+#13 reset = 0;
+end
+
+
+always                                                 
+// optional sensitivity list                           
+// @(event1 or event2 or .... eventn)                  
+begin                                                  
+// code executes for every event on sensitivity list   
+// insert code here --> begin                          
+
+for(count = 3'b0 ; count<= 3'b111 ;count = count+1)
+	begin
+		Data = 4'b0010;
+		#3 Go = 1;
+		#50 Go = 0;
+		#10 Opcode= Opcode + 1;
+	end
+
+@eachvec;                                              
+// --> end                                             
+end                                                    
+endmodule
+
+
+```
+

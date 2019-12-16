@@ -1020,3 +1020,601 @@ endmodule
 
 ## Distance Calculation Module - taxi_distance_ptime.v
 
+```verilog
+module taxi_distance_ptime(high_speed, low_speed, pause_state, stop_state, wheel_clk, clk, distance, low_time);
+	input high_speed, low_speed, pause_state, stop_state, wheel_clk, clk;
+	output reg [16:0] low_time, distance;
+	
+	reg [4:0] wheel_counter2;
+	reg [19:0] clk_counter2; //low speed time
+
+	initial begin
+		low_time = 0;
+		distance = 0;
+		wheel_counter2 = 0;
+		clk_counter2 = 0;
+	end
+	
+	//distance
+	always@(posedge wheel_clk or posedge stop_state)begin
+		if(stop_state) begin 
+			distance = 0;
+			wheel_counter2 = 0;
+		end
+		else begin
+			if(!pause_state)begin
+				wheel_counter2 = wheel_counter2 + 1;
+				if(wheel_counter2 == 10)begin //10圈轮子7米
+					distance = distance + 7;
+					wheel_counter2 = 0;
+				end
+			end
+		end
+		
+	end
+	
+	//low speed time
+	always@(posedge clk or posedge stop_state)begin
+		if(stop_state)begin
+			low_time = 0;
+			clk_counter2 = 0;
+		end
+		else begin
+			if(low_speed) clk_counter2 = clk_counter2 + 1;
+			low_time = clk_counter2/30000; //30000个cycle是5分钟
+		end
+	end
+endmodule
+
+```
+
+## Price Calculation Module - taix_money.v
+
+```verilog
+module taxi_money(distance, low_time, clk, stop_state, distance_out, money);
+	input [16:0] distance, low_time;
+	input clk, stop_state;
+	output reg [16:0] distance_out, money;
+	reg [16:0] money_low, distance_50, money_50;
+	
+	initial begin
+		distance_out = 0;
+		money = 0;
+		money_low = 0;
+	end
+	
+	always@(posedge clk or posedge stop_state)begin
+		if(stop_state)begin
+			distance_out = 0;
+			money = 0;
+			money_low = 0;
+		end
+		else begin
+			money_low = low_time*23;
+			distance_out = distance;
+			if(distance <= 3000)begin
+				money = 130 + money_low;
+			end
+			else begin
+				if(money < 500)begin
+					money = (23*((distance-3000)/1000)) + 130 + money_low;
+					distance_50 = distance;
+					money_50 = (23*((distance-3000)/1000)) + 130;
+				end
+				else begin
+					money = money_50 + (33*((distance-distance_50)/1000))+ money_low; 
+				end
+			end
+		end
+	end
+endmodule
+
+```
+
+## LED Module - LED2.v
+
+```verilog
+module LED2s(distance_out, money, display, scan, clk2, clk, dp);
+	input [16:0] distance_out, money;
+	input clk2, clk;//clk2 用来扫描 clk2要远远快于clk
+	output reg [6:0] display;
+	output reg [8:0] scan;
+	output reg dp;
+	reg [10:0] X1_distance, X2_distance, G_distance, S_distance,B_distance;
+	reg [10:0] X1_money, G_money, S_money, B_money;
+	reg [3:0] chos, data;
+	
+	parameter BLANK = 7'b0000000;
+	parameter ZERO  = 7'b1111110; 
+	parameter ONE   = 7'b0110000;
+	parameter TWO   = 7'b1101101;
+	parameter THREE = 7'b1111001;
+	parameter FOUR  = 7'b0110011;
+	parameter FIVE  = 7'b1011011;
+	parameter SIX   = 7'b1011111;
+	parameter SEVEN = 7'b1110000;
+	parameter EIGHT = 7'b1111111;
+	parameter NINE  = 7'b1111011;
+
+	initial begin
+		chos = 10;
+		scan = 'b000000000;
+		display = BLANK;
+	end
+    
+	always@(posedge clk)begin
+		X2_distance = distance_out%100/10;
+		X1_distance = distance_out%1000/100;
+		G_distance =  distance_out%10000/1000; //distance 米，要变成千米
+		S_distance =  distance_out%100000/10000;
+		B_distance =  distance_out%1000000/100000;
+		
+		X1_money = money%10;
+		G_money = money%100/10;
+		S_money = money%1000/100;
+		B_money = money%10000/1000;
+	end
+	
+	always@(data)begin
+		case(data)
+			0:begin display = ZERO; end
+			1:begin display = ONE;  end
+			2:begin display = TWO;  end
+			3:begin display = THREE; end
+			4:begin display = FOUR; end
+			5:begin display = FIVE; end
+			6:begin display = SIX;  end
+			7:begin display = SEVEN;end
+			8:begin display = EIGHT;end
+			9:begin display = NINE; end
+			default:begin display = BLANK; end
+		endcase	
+	end
+	
+	
+	
+	always@(posedge clk2)begin
+		if(chos < 8) chos = chos + 1;
+		else chos = 0;
+	end
+	
+	always@(chos)begin
+		case(chos)
+			0:begin data = X2_distance;	dp = 0;	scan = 'b000000001; end 
+			1:begin data = X1_distance;	dp = 0;	scan = 'b000000010; end
+			2:begin data = G_distance;		dp = 1;	scan = 'b000000100; end
+			3:begin data = S_distance;		dp = 0;	scan = 'b000001000; end
+			4:begin data = B_distance;		dp = 0;	scan = 'b000010000; end
+			5:begin data = X1_money;		dp = 0;	scan = 'b000100000; end
+			6:begin data = G_money;			dp = 1;	scan = 'b001000000; end
+			7:begin data = S_money;			dp = 0;	scan = 'b010000000; end
+			8:begin data = B_money;			dp = 0;	scan = 'b100000000; end
+			default:begin data = 10;		dp = 0;	scan = 'b000000000; end
+		endcase
+	end
+endmodule
+
+```
+
+## Top Module Test Bench
+
+```verilog
+module t_taxi_top();
+	reg pause, start, stop, clk, wheel_clk, clk2;
+	wire [6:0] display;
+	wire [8:0] scan;
+	wire dp;
+	integer i;
+	
+	Lab3 qm(.pause(pause),.start(start),.stop(stop),.clk(clk),.wheel_clk(wheel_clk),.clk2(clk2),.display(display),.scan(scan),.dp(dp));
+	
+	initial begin
+		pause=1'b0;
+		start=1'b0;
+		stop=1'b1;
+		clk=1'b0;
+		wheel_clk=1'b0;
+		clk2=1'b0;
+	end
+		always #50 clk=~clk;
+		always #5 clk2=~clk2;
+		always begin
+			for(i=0;i<500;i=i+1)begin
+			#4 wheel_clk=~wheel_clk;
+			end
+			for(i=0;i<20;i=i+1)begin
+			#60 wheel_clk=~wheel_clk;
+			end
+		end
+		
+		
+		initial begin
+		#50   start = 1;
+		      stop = 0;
+		      pause = 0;	
+		
+		#1000 pause = 1;
+		#100  pause = 0;
+		#3000 stop = 1;
+		end
+		
+		initial $monitor($time,"the display is: %d ,the scan is : %d ,the dp is : %d ",display,scan,dp);
+		
+endmodulemodule t_taxi_top();
+	reg pause, start, stop, clk, wheel_clk, clk2;
+	wire [6:0] display;
+	wire [8:0] scan;
+	wire dp;
+	integer i;
+	
+	Lab3 qm(.pause(pause),.start(start),.stop(stop),.clk(clk),.wheel_clk(wheel_clk),.clk2(clk2),.display(display),.scan(scan),.dp(dp));
+	
+	initial begin
+		pause=1'b0;
+		start=1'b0;
+		stop=1'b1;
+		clk=1'b0;
+		wheel_clk=1'b0;
+		clk2=1'b0;
+	end
+		always #50 clk=~clk;
+		always #5 clk2=~clk2;
+		always begin
+			for(i=0;i<500;i=i+1)begin
+			#4 wheel_clk=~wheel_clk;
+			end
+			for(i=0;i<20;i=i+1)begin
+			#60 wheel_clk=~wheel_clk;
+			end
+		end
+		
+		
+		initial begin
+		#50   start = 1;
+		      stop = 0;
+		      pause = 0;	
+		
+		#1000 pause = 1;
+		#100  pause = 0;
+		#3000 stop = 1;
+		end
+		
+		initial $monitor($time,"the display is: %d ,the scan is : %d ,the dp is : %d ",display,scan,dp);
+		
+endmodule
+```
+
+## Control Module Test Bench
+
+```verilog
+// Copyright (C) 2018  Intel Corporation. All rights reserved.
+// Your use of Intel Corporation's design tools, logic functions 
+// and other software and tools, and its AMPP partner logic 
+// functions, and any output files from any of the foregoing 
+// (including device programming or simulation files), and any 
+// associated documentation or information are expressly subject 
+// to the terms and conditions of the Intel Program License 
+// Subscription Agreement, the Intel Quartus Prime License Agreement,
+// the Intel FPGA IP License Agreement, or other applicable license
+// agreement, including, without limitation, that your use is for
+// the sole purpose of programming logic devices manufactured by
+// Intel and sold by Intel or its authorized distributors.  Please
+// refer to the applicable agreement for further details.
+
+// *****************************************************************************
+// This file contains a Verilog test bench template that is freely editable to  
+// suit user's needs .Comments are provided in each section to help the user    
+// fill out necessary details.                                                  
+// *****************************************************************************
+// Generated on "12/10/2019 10:03:44"
+                                                                                
+// Verilog Test Bench template for design : taxi_control
+// 
+// Simulation tool : ModelSim-Altera (Verilog)
+// 
+
+`timescale 1 ps/ 1 ps
+module taxi_control_vlg_tst();
+// constants                                           
+// general purpose registers
+reg eachvec;
+// test vector input registers
+reg clk;
+reg pause;
+reg start;
+reg stop;
+reg wheel_clk;
+// wires                                               
+wire high_speed;
+wire low_speed;
+wire pause_state;
+wire stop_state;
+
+// assign statements (if any)                          
+taxi_control i1 (
+// port map - connection between master ports and signals/registers   
+	.clk(clk),
+	.high_speed(high_speed),
+	.low_speed(low_speed),
+	.pause(pause),
+	.pause_state(pause_state),
+	.start(start),
+	.stop(stop),
+	.stop_state(stop_state),
+	.wheel_clk(wheel_clk)
+);
+initial                                                
+begin                                                  
+// code that executes only once                        
+// insert code here --> begin                          
+	clk = 0;
+	wheel_clk = 0;
+	stop = 0;
+	start = 1;
+	pause = 0;
+	forever #50 clk = ~clk;
+// --> end                                             
+$display("Running testbench");                       
+end
+
+initial
+begin
+	#4000 stop = 1;
+			start = 0;
+	#8000 stop = 0;
+			start = 1;
+			pause = 1;
+end
+
+always                                                 
+// optional sensitivity list                           
+// @(event1 or event2 or .... eventn)                  
+begin                                                  
+// code executes for every event on sensitivity list   
+// insert code here --> begin                          
+	for(i=0;i<10;i=i+1)
+		begin
+			#100 wheel_clk = ~wheel_clk;
+		end
+	
+	for(i=0;i<20;i=i+1)
+		begin
+			#50 wheel_clk = ~wheel_clk;
+		end
+@eachvec;                                              
+// --> end                                             
+end                                                    
+endmodule
+
+
+```
+
+## Distance Calculation Module Test Bench
+
+```verilog
+// Copyright (C) 2018  Intel Corporation. All rights reserved.
+// Your use of Intel Corporation's design tools, logic functions 
+// and other software and tools, and its AMPP partner logic 
+// functions, and any output files from any of the foregoing 
+// (including device programming or simulation files), and any 
+// associated documentation or information are expressly subject 
+// to the terms and conditions of the Intel Program License 
+// Subscription Agreement, the Intel Quartus Prime License Agreement,
+// the Intel FPGA IP License Agreement, or other applicable license
+// agreement, including, without limitation, that your use is for
+// the sole purpose of programming logic devices manufactured by
+// Intel and sold by Intel or its authorized distributors.  Please
+// refer to the applicable agreement for further details.
+
+// *****************************************************************************
+// This file contains a Verilog test bench template that is freely editable to  
+// suit user's needs .Comments are provided in each section to help the user    
+// fill out necessary details.                                                  
+// *****************************************************************************
+// Generated on "12/09/2019 19:31:52"
+                                                                                
+// Verilog Test Bench template for design : taxi_distance_ptime
+// 
+// Simulation tool : ModelSim-Altera (Verilog)
+// 
+
+`timescale 1 ps/ 1 ps
+module taxi_distance_ptime_vlg_tst();
+// constants                                           
+// general purpose registers
+reg eachvec;
+// test vector input registers
+reg clk;
+reg high_speed;
+reg low_speed;
+reg pause_state;
+reg stop_state;
+reg wheel_clk;
+// wires                                               
+wire [16:0]  distance;
+wire [16:0]  low_time;
+
+// assign statements (if any)                          
+taxi_distance_ptime i1 (
+// port map - connection between master ports and signals/registers   
+	.clk(clk),
+	.distance(distance),
+	.high_speed(high_speed),
+	.low_speed(low_speed),
+	.low_time(low_time),
+	.pause_state(pause_state),
+	.stop_state(stop_state),
+	.wheel_clk(wheel_clk)
+);
+initial                                                
+begin                                                  
+// code that executes only once                        
+// insert code here --> begin                          
+clk = 0;
+stop_state = 0;
+pause_state = 0;
+low_speed = 0;
+high_speed = 1;
+forever #5 clk = ~clk;
+
+// --> end                                             
+$display("Running testbench");                       
+end
+
+initial begin
+wheel_clk = 0;
+forever #10 wheel_clk = ~wheel_clk;
+end
+
+always                                                 
+// optional sensitivity list                           
+// @(event1 or event2 or .... eventn)                  
+begin                                                  
+// code executes for every event on sensitivity list   
+// insert code here --> begin                          
+#400 pause_state = 1;
+#200 pause_state = 0;
+#400 low_speed = 1;
+#400 low_speed = 0;
+#200 stop_state = 1;
+#100 stop_state = 0;
+#400 pause_state = 1;
+#200 pause_state = 0;
+#400 low_speed = 1;
+#400 low_speed = 0;
+@eachvec;                                              
+// --> end                                             
+end                                                    
+endmodule
+
+
+```
+
+## Price Calculation Module Test Bench
+
+```verilog
+// Copyright (C) 2018  Intel Corporation. All rights reserved.
+// Your use of Intel Corporation's design tools, logic functions 
+// and other software and tools, and its AMPP partner logic 
+// functions, and any output files from any of the foregoing 
+// (including device programming or simulation files), and any 
+// associated documentation or information are expressly subject 
+// to the terms and conditions of the Intel Program License 
+// Subscription Agreement, the Intel Quartus Prime License Agreement,
+// the Intel FPGA IP License Agreement, or other applicable license
+// agreement, including, without limitation, that your use is for
+// the sole purpose of programming logic devices manufactured by
+// Intel and sold by Intel or its authorized distributors.  Please
+// refer to the applicable agreement for further details.
+
+// *****************************************************************************
+// This file contains a Verilog test bench template that is freely editable to  
+// suit user's needs .Comments are provided in each section to help the user    
+// fill out necessary details.                                                  
+// *****************************************************************************
+// Generated on "12/10/2019 10:21:42"
+                                                                                
+// Verilog Test Bench template for design : taxi_money
+// 
+// Simulation tool : ModelSim-Altera (Verilog)
+// 
+
+`timescale 1 ps/ 1 ps
+module taxi_money_vlg_tst();
+// constants                                           
+// general purpose registers
+reg eachvec;
+// test vector input registers
+reg clk;
+reg [31:0] distance;
+reg [31:0] low_time;
+reg stop_state;
+// wires                                               
+wire [31:0]  distance_out;
+wire [31:0]  money;
+
+// assign statements (if any)                          
+taxi_money i1 (
+// port map - connection between master ports and signals/registers   
+	.clk(clk),
+	.distance(distance),
+	.distance_out(distance_out),
+	.low_time(low_time),
+	.money(money),
+	.stop_state(stop_state)
+);
+initial                                                
+begin                                                  
+// code that executes only once                        
+// insert code here --> begin                          
+                                                       
+// --> end                                             
+$display("Running testbench");                       
+end                                                    
+always                                                 
+// optional sensitivity list                           
+// @(event1 or event2 or .... eventn)                  
+begin                                                  
+// code executes for every event on sensitivity list   
+// insert code here --> begin                          
+                                                       
+@eachvec;                                              
+// --> end                                             
+end                                                    
+endmodule
+
+
+```
+
+## LED Module Test Bench
+
+```verilog
+`timescale 1ns/10ps
+module LED2s_test();
+reg [16:0] distance_out, money;
+reg clk2,clk;
+wire [8:0] scan; 
+wire dp;
+wire [6:0]display; 
+LED2s L1 (distance_out, money, display, scan, clk2, clk, dp);
+
+always begin
+	#50 clk = ~ clk;
+end
+
+always begin
+	#2 clk2 = ~ clk2;
+end
+
+initial begin
+	clk = 0;
+	clk2 = 0;
+	distance_out = 12345;
+	money = 6666;
+	#200 distance_out = 78965;
+	money = 5555;
+	#350 $finish;
+end
+
+initial $monitor
+($time,
+"current distance: %d  current money: %d\n                    current LED: %b    current value: %b ",
+distance_out, money, scan, display);
+
+endmodule
+/*
+parameter BLANK = 7'b0000000;
+parameter ZERO  = 7'b1111110;    
+parameter ONE   = 7'b0110000;    
+parameter TWO   = 7'b1101101;    
+parameter THREE = 7'b1111001;    
+parameter FOUR  = 7'b0110011;    
+parameter FIVE  = 7'b1011011;    
+parameter SIX   = 7'b1011111;    
+parameter SEVEN = 7'b1110000;    
+parameter EIGHT = 7'b1111111;    
+parameter NINE  = 7'b1111011;
+*/
+
+```
+

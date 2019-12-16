@@ -153,3 +153,119 @@ Shi Bo: All the Lab 1 is finished by Shi Bo.
 
 In this Lab, out team design a simple 8-bit ALU. Each of us participated in the experiment, completed the experiment together, and performed a simulation test. We successfully completed this experiment and the results are satisfactory.
 
+# Source Code
+
+## ALU - Lab1.v
+
+```verilog
+module Lab1(output reg [7:0] ALU_out, input [7:0] Data_A, Data_B, input [2:0] Opcode);
+	parameter	Add		= 3'b000,	//	A + B
+					Subtract	= 3'b001,	//	A - B
+					Or_AB		= 3'b010,	//	A | B
+					And_AB	= 3'b011,	//	A & B
+					Not_A		= 3'b100,	//	~ A
+					Exor		= 3'b101,	//	A ^ B
+					Exnor		= 3'b110,	//	A ~ ^ B
+					Ror_A		= 3'b111;	//	| A
+
+	always@(*)
+	
+	case(Opcode)
+		Add:			ALU_out =  Data_A + Data_B;
+		Subtract:	ALU_out =  Data_A - Data_B;
+		Or_AB:		ALU_out =  Data_A | Data_B;
+		And_AB:		ALU_out =  Data_A & Data_B;
+		Not_A:		ALU_out =  ~ Data_A;
+		Exor:			ALU_out =  Data_A ^ Data_B;
+		Exnor:		ALU_out =  Data_A ~^ Data_B;
+		Ror_A:		ALU_out <= {Data_A[0],Data_A[7:1]};
+	endcase
+endmodule
+```
+
+## ALU Test Bench
+
+```verilog
+// Copyright (C) 2018  Intel Corporation. All rights reserved.
+// Your use of Intel Corporation's design tools, logic functions 
+// and other software and tools, and its AMPP partner logic 
+// functions, and any output files from any of the foregoing 
+// (including device programming or simulation files), and any 
+// associated documentation or information are expressly subject 
+// to the terms and conditions of the Intel Program License 
+// Subscription Agreement, the Intel Quartus Prime License Agreement,
+// the Intel FPGA IP License Agreement, or other applicable license
+// agreement, including, without limitation, that your use is for
+// the sole purpose of programming logic devices manufactured by
+// Intel and sold by Intel or its authorized distributors.  Please
+// refer to the applicable agreement for further details.
+
+// *****************************************************************************
+// This file contains a Verilog test bench template that is freely editable to  
+// suit user's needs .Comments are provided in each section to help the user    
+// fill out necessary details.                                                  
+// *****************************************************************************
+// Generated on "10/25/2019 18:04:54"
+                                                                                
+// Verilog Test Bench template for design : Lab1
+// 
+// Simulation tool : ModelSim-Altera (Verilog)
+// 
+// *****************************************************************************
+// My UCD Student Number is 16206553
+// The input number are 35d and 56d.
+// 0010 0011b and 0011 1000b.
+// *****************************************************************************
+
+`timescale 1 ps/ 1 ps
+module Lab1_vlg_tst();
+// constants                                           
+// general purpose registers
+reg eachvec;
+// test vector input registers
+reg [7:0] Data_A;
+reg [7:0] Data_B;
+reg [2:0] Opcode;
+// wires                                               
+wire [7:0]  ALU_out;
+
+// assign statements (if any)                          
+Lab1 i1 (
+// port map - connection between master ports and signals/registers   
+	.ALU_out(ALU_out),
+	.Data_A(Data_A),
+	.Data_B(Data_B),
+	.Opcode(Opcode)
+);
+initial                                                
+begin                                                  
+// code that executes only once                        
+// insert code here --> begin                          
+	Data_A = 8'b00100011;
+	Data_B = 8'b00111000;
+	
+	#20 Opcode = 3'b000;
+	#20 Opcode = 3'b001;
+	#20 Opcode = 3'b010;
+	#20 Opcode = 3'b011;
+	#20 Opcode = 3'b100;
+	#20 Opcode = 3'b101;
+	#20 Opcode = 3'b110;
+	#20 Opcode = 3'b111;
+// --> end                                             
+$display("Running testbench");                       
+end                                                    
+always                                                 
+// optional sensitivity list                           
+// @(event1 or event2 or .... eventn)                  
+begin                                                  
+// code executes for every event on sensitivity list   
+// insert code here --> begin                          
+                                                       
+@eachvec;                                              
+// --> end                                             
+end                                                    
+endmodule
+
+```
+
