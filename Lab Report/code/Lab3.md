@@ -750,17 +750,83 @@ After 250ns, the value of each intermediate variables change, and we get the cor
 
 ### Top Module Testbench
 
+First of all, the overall waveform diagram is like this,
+
+![1](Lab3.assets/1.png)
+
+![2](Lab3.assets/2.png)
+
+![3](Lab3.assets/3.png)
+
+Each bit of **scan** in the figure corresponds to a digital tube position. The value will be displayed on the display. 1 indicates that the corresponding digital tube is on, and 0 indicates that the digital tube is off, which corresponds to each number.
+
+```verilog
+	parameter BLANK = 7'b0000000;
+	parameter ZERO  = 7'b1111110; 
+	parameter ONE   = 7'b0110000;
+	parameter TWO   = 7'b1101101;
+	parameter THREE = 7'b1111001;
+	parameter FOUR  = 7'b0110011;
+	parameter FIVE  = 7'b1011011;
+	parameter SIX   = 7'b1011111;
+	parameter SEVEN = 7'b1110000;
+	parameter EIGHT = 7'b1111111;
+	parameter NINE  = 7'b1111011;
+```
+
+According to the billing standard, it does not exceed 3km, and we start at 13 yuan. Over 3km, less than 1km is not counted, 2 yuan per kilometer is charged for 3 yuan, the total price is more than 50 yuan, 3.3 yuan per kilometer is charged.
+
+In this waveform chart, it means that we have walked 2100 meters and spent 13 yuan. Our 130 here means 13 yuan. The distance is 2100 meters, or 2.1 kilometres. Money is 13, which is 13.0.
+
+![2.1km](Lab3.assets/2.1km.png)
+
+Then our expected result is:
+
+Money: `13.0`
+
+Distance: `_ _ 02.1_`
+
+| Display |   scan    |        | parameter |      |
+| :-----: | :-------: | :----: | :-------: | :--: |
+| 1111110 | 100000000 |  B_m   |   ZERO    |  0   |
+|  blank  | 000000001 | X2_dis |   BLANK   |  /   |
+| 0110000 | 000000010 | X1_dis |    ONE    |  1   |
+| 1101101 | 000000100 | G_dis  |    TWO    |  2   |
+| 1111110 | 000001000 | S_dis  |   ZERO    |  0   |
+|  blank  | 000010000 | B_dis  |   BLANK   |  /   |
+|  blank  | 000100000 |  X1_m  |   BLANK   |  /   |
+| 1111001 | 001000000 |  G_m   |   THREE   |  3   |
+| 0110000 | 010000000 |  S_m   |    ONE    |  1   |
+
+As shown above, it is consistent with our expected results.
+
+In this waveform chart, pause becomes 1, where the meter is suspended but the price remains the same, but the distance will continue to increase.
+
+![pause1](Lab3.assets/pause1.png)
+
+In this figure we can see that after pause is equal to 1, **clk** has experienced two rising clock edges. But money remains the same. Consistent with our expectations.
+
+![lowspeed1](Lab3.assets/lowspeed1.png)
+
+In this picture, the car is driving at a low speed. The penultimate waveform in the figure corresponds to the money generated in the low-speed driving state. 
+
+After low speeds, the way money is calculated changes. We also add extra money for low speed driving. First of all, because we set the distance of 50 yuan to 18900 according to the pricing rules, and when the money reaches 47.5, we will use the price of 3.3 per kilometre. In this way, we can get the price of the part higher than 50 yuan. Finally add 2.3 yuan from low speed driving Finally, according to the calculation, we get
+$$
+47.5+3 \times(22400-18900) \div 1000 + 2.3=58.7
+$$
+Which is consistent with expectations.
+
 ## Resource Allocation
 
-Liu Ziyang: Lab Targets, Circut Diagram, Distance Calculation Module and Testbench, and Summary.
+Liu Ziyang: Distance calculation module and testbench, the corresponding part of the experimental report , and other parts of lab report.
 
-Xu Zhikun: Top Module Design Testbench
+Xu Zhikun: Top module design and testbench, and the corresponding part of the experimental report.
 
-Zhu Yanxing: LED Module and Testbench
+Zhu Yanxing: LED module design and testbench, and the corresponding part of the experimental report.
 
-Chen Dingrui: Price Calculation Module and Testbench
+Chen Dingrui: Price calculation module design and testbench, and the corresponding part of the experimental report.
 
-Gong Chen: Control Module and Testbench
+Gong Chen: Control module design and testbench, and the corresponding part of the experimental report.
 
 ## Summary
 

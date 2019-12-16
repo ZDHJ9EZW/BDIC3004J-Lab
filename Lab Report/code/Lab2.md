@@ -311,15 +311,15 @@ This result is our expected.
 
 ## Resource Allocation
 
-Liu Ziyang: Lab Targets, Circut Diagram, Toggle Bottom module design, and Summary.
+Liu Ziyang: Toggle Bottom module design and testbench, and experimental report writing.
 
-Xu Zhikun: Top Module Design and Testbench.
+Xu Zhikun: Top module design and testbench.
 
-Zhu Yanxing: Top Module Design and Toggle Botton Testbench.
+Zhu Yanxing: Top module design and toggle botton testbench.
 
-Chen Dingrui: Register Design and Testbench.
+Chen Dingrui: Register design and testbench.
 
-Gong Chen: Toggle Bottom module design, Top Module Testbench.
+Gong Chen: Toggle bottom module design and top module testbench.
 
 ## Summary
 

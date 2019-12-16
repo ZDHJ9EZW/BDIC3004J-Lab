@@ -1,0 +1,30 @@
+module t_taxi_top();
+	reg pause, start, stop, clk, wheel_clk, clk2;
+	wire [6:0] display;
+	wire [8:0] scan;
+	wire dp;
+	integer i;
+	
+	Lab3 qm(.pause(pause),.start(start),.stop(stop),.clk(clk),.wheel_clk(wheel_clk),.clk2(clk2),.display(display),.scan(scan),.dp(dp));
+	
+	initial begin
+		pause=1'b0;
+		start=1'b0;
+		stop=1'b1;
+		clk=1'b0;
+		wheel_clk=1'b0;
+		clk2=1'b0;
+	end
+		always #50 clk=~clk;
+		always #5 clk2=~clk2;
+		always #50 wheel_clk=~wheel_clk;
+	
+		
+		initial begin
+		#50   start = 1;
+		      stop = 0;
+		      pause = 0;	
+		end
+		initial $monitor($time,"the display is: %d ,the scan is : %d ,the dp is : %d ",display,scan,dp);
+		
+endmodule

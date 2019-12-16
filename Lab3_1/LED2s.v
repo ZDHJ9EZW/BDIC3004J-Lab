@@ -9,15 +9,15 @@ module LED2s(distance_out, money, display, scan, clk2, clk, dp);
 	reg [3:0] chos, data;
 	
 	parameter BLANK = 7'b0000000;
-	parameter ZERO  = 7'b1111110;    
-	parameter ONE   = 7'b0110000;    
-	parameter TWO   = 7'b1101101;    
-	parameter THREE = 7'b1111001;    
-	parameter FOUR  = 7'b0110011;    
-	parameter FIVE  = 7'b1011011;    
-	parameter SIX   = 7'b1011111;    
-	parameter SEVEN = 7'b1110000;    
-	parameter EIGHT = 7'b1111111;    
+	parameter ZERO  = 7'b1111110; 
+	parameter ONE   = 7'b0110000;
+	parameter TWO   = 7'b1101101;
+	parameter THREE = 7'b1111001;
+	parameter FOUR  = 7'b0110011;
+	parameter FIVE  = 7'b1011011;
+	parameter SIX   = 7'b1011111;
+	parameter SEVEN = 7'b1110000;
+	parameter EIGHT = 7'b1111111;
 	parameter NINE  = 7'b1111011;
 
 	initial begin
@@ -64,16 +64,16 @@ module LED2s(distance_out, money, display, scan, clk2, clk, dp);
 	
 	always@(chos)begin
 		case(chos)
-			0:begin data = X2_distance;dp = 0;scan = 'b000000001; end 
-			1:begin data = X1_distance;dp = 0;scan = 'b000000010; end
-			2:begin data = G_distance;dp = 1;scan = 'b000000100;  end
-			3:begin data = S_distance;dp = 0;scan = 'b000001000;  end
-			4:begin data = B_distance;dp = 0;scan = 'b000010000;  end
-			5:begin data = X1_money;dp = 0;scan = 'b000100000;    end
-			6:begin data = G_money;dp = 1;scan = 'b001000000;     end
-			7:begin data = S_money;dp = 0;scan = 'b010000000;     end
-			8:begin data = B_money;dp = 0;scan = 'b100000000;     end
-			default:begin data = 10;dp = 0;scan = 'b000000000;     end
+			0:begin data = X2_distance;	dp = 0;	scan = 'b000000001; end 
+			1:begin data = X1_distance;	dp = 0;	scan = 'b000000010; end
+			2:begin data = G_distance;		dp = 1;	scan = 'b000000100; end
+			3:begin data = S_distance;		dp = 0;	scan = 'b000001000; end
+			4:begin data = B_distance;		dp = 0;	scan = 'b000010000; end
+			5:begin data = X1_money;		dp = 0;	scan = 'b000100000; end
+			6:begin data = G_money;			dp = 1;	scan = 'b001000000; end
+			7:begin data = S_money;			dp = 0;	scan = 'b010000000; end
+			8:begin data = B_money;			dp = 0;	scan = 'b100000000; end
+			default:begin data = 10;		dp = 0;	scan = 'b000000000; end
 		endcase
 	end
 endmodule
