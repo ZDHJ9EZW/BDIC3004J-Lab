@@ -750,7 +750,100 @@ After 250ns, the value of each intermediate variables change, and we get the cor
 
 ### Top Module Testbench
 
-First of all, the overall waveform diagram is like this,
+*In order to quickly verify the functional correctness of the system, we changed some values of the judgment conditions in the final test. This will not affect the overall logic and structure of the system.*
+
+```verilog
+module t_taxi_top();
+	reg pause, start, stop, clk, wheel_clk, clk2;
+	wire [6:0] display;
+	wire [8:0] scan;
+	wire dp;
+	integer i;
+	
+	Lab3 qm(.pause(pause),.start(start),.stop(stop),.clk(clk),.wheel_clk(wheel_clk),.clk2(clk2),.display(display),.scan(scan),.dp(dp));
+	
+	initial begin
+		pause=1'b0;
+		start=1'b0;
+		stop=1'b1;
+		clk=1'b0;
+		wheel_clk=1'b0;
+		clk2=1'b0;
+	end
+		always #50 clk=~clk;
+		always #5 clk2=~clk2;
+		always begin
+			for(i=0;i<500;i=i+1)begin
+			#4 wheel_clk=~wheel_clk;
+			end
+			for(i=0;i<20;i=i+1)begin
+			#60 wheel_clk=~wheel_clk;
+			end
+		end
+		
+		
+		initial begin
+		#50   start = 1;
+		      stop = 0;
+		      pause = 0;	
+		
+		#1000 pause = 1;
+		#100  pause = 0;
+		#3000 stop = 1;
+		end
+		
+		initial $monitor($time,"the display is: %d ,the scan is : %d ,the dp is : %d ",display,scan,dp);
+		
+endmodule
+```
+
+The top-level module detestbench is explained in detail.
+
+```verilog
+ always # 50 clk = ~ clk;
+```
+
+
+Here **clock** is a fixed clock and has remained the same. Delay 50 will flip, so his period is 100.
+
+ ```verilog
+always # 5 clk2 = ~ clk2;
+ ```
+
+Here **clock2** represents the clock of the scanning tube, which must be less than nine times the clock. We use 9 LED tubes to represent it, so we need to scan nine LED tubes in one clock cycle. In other words, every so many times, we have to change a digital tube. A total of 9 digital tubes have to be changed. No digital tube indicates a digit, and these 9 digital tubes indicate money and distance. Everything I have is represented with this big clock. I need to change the small clock at least 9 times in the clock to display a complete waveform.
+
+Then, in order to distinguish between low-speed driving and high-speed driving, the pricing standards for low-speed driving and high-speed driving are different.
+
+```verilog
+		always begin
+			for(i=0;i<500;i=i+1)begin
+			#4 wheel_clk=~wheel_clk;
+			end
+			for(i=0;i<20;i=i+1)begin
+			#60 wheel_clk=~wheel_clk;
+			end
+		end
+```
+
+Here, a clock that rolls over after 4 seconds indicates the state of high-speed driving. After 60 seconds, a clock occurs anyway, indicating a low-speed clock.Let the high-speed cycle total 2,000 seconds, there are 500 cycles, each time is 4s. That is, the first 500 cycles, let him output high-speed, there will be a high-speed pricing rule. Low speed is not performed during high speed driving so there is no low speed charge. Then we measured more than ten kilometers, we began to measure the price of low-speed driving, low-speed billing will go up.
+
+We have three states, start, pause, and stop.
+
+```verilog
+		initial begin
+		#50   start = 1;
+		      stop = 0;
+		      pause = 0;	
+		
+		#1000 pause = 1;
+		#100  pause = 0;
+		#3000 stop = 1;
+		end
+```
+
+For the first 50 seconds, we set start to 1, which means the car started to run and started to charge. With a delay of 1000s, we set pause to 1, which means that the pricing table will not be cleared but the billing will stop. After setting stop to 1, the pricing table will be cleared.
+
+The overall waveform diagram is like this.
 
 ![1](Lab3.assets/1.png)
 
@@ -831,3 +924,99 @@ Gong Chen: Control module design and testbench, and the corresponding part of th
 ## Summary
 
 In this lab, we analyzed the functional requirements of "taxi meter" and completed the Verilog HDL design description. Then we design the pricing function, vehicle running state simulation and other functions of the test program. Completed the preparation of Testbench and the simulation verification on the Modelsim platform.
+
+# Source Code
+
+## Top Module - Lab3.v
+
+```verilog
+module Lab3(pause, start, stop, clk, wheel_clk, clk2, display, scan, dp);
+	input pause, start, stop, clk, wheel_clk, clk2;
+	output [6:0] display;
+	output [8:0] scan;
+	output dp;
+	wire low_speed, high_speed, pause_state, stop_state;
+	wire [16:0] low_time, distance, distance_out, money;
+	
+	taxi_control T1 (.pause(pause), .start(start), .stop(stop), .clk(clk), .wheel_clk(wheel_clk), 
+	.low_speed(low_speed), .high_speed(high_speed), .pause_state(pause_state), .stop_state(stop_state));
+	
+	taxi_distance_ptime T2 (.low_speed(low_speed), .high_speed(high_speed), .pause_state(pause_state), .stop_state(stop_state),
+	.clk(clk), .wheel_clk(wheel_clk), .low_time(low_time), .distance(distance));
+	
+	taxi_money T3 (.stop_state(stop_state), .distance(distance), .low_time(low_time), .clk(clk),
+	.distance_out(distance_out), .money(money));
+	
+	LED2s L1 (.distance_out(distance_out), .money(money), .display(display), .scan(scan), .dp(dp), .clk(clk), .clk2(clk2));
+
+endmodule
+```
+
+## Control Module - taxi_control.v
+
+```verilog
+module taxi_control(clk, wheel_clk, stop, start, pause, low_speed, high_speed, pause_state, stop_state);
+	input clk, wheel_clk, stop, start, pause;
+	output reg low_speed, high_speed, pause_state, stop_state;
+	
+	reg [6:0]clk_counter, wheel_counter;
+	reg control;//判断是否经过固定时间
+	reg [6:0]judge;
+
+	initial begin
+		clk_counter = 0;
+		wheel_counter = 0;
+		judge = 0;
+		control = 0;
+	end
+
+	always@(posedge clk)begin
+		if(control) control = 0;
+		clk_counter = clk_counter + 1;
+		if(clk_counter == 100)begin 
+			control = 1;
+			clk_counter = 0;
+			judge = wheel_counter;
+		end	
+		
+	end
+
+
+	always@(posedge wheel_clk, posedge control)begin
+		if(control) wheel_counter = 0;
+		else wheel_counter = wheel_counter +1 ;
+	end
+
+	always@(posedge clk)begin
+		if(stop)begin
+			low_speed = 0;
+			high_speed = 0;
+			pause_state = 0;
+			stop_state = 1;
+		end
+		else if(start)begin
+			stop_state = 0;
+			if(pause)begin
+				high_speed = 0;
+				low_speed = 0;
+				pause_state = 1;
+			end
+			else begin
+				pause_state = 0;
+				if(judge >= 10)begin
+					low_speed = 0;
+					high_speed = 1;
+				end
+				else begin
+					high_speed = 0;
+					low_speed = 1;
+				end
+			end
+		end
+	end
+endmodule
+
+```
+
+## Distance Calculation Module - taxi_distance_ptime.v
+
