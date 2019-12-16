@@ -5,7 +5,7 @@ module t_taxi_top();
 	wire dp;
 	integer i;
 	
-	Lab3 qm(.pause(pause),.start(start),.stop(stop),.clk(clk),.wheel_clk(wheel_clk),.clk2(clk2),.display(display),.scan(scan),.dp(dp));
+	taxi_top qm(.pause(pause),.start(start),.stop(stop),.clk(clk),.wheel_clk(wheel_clk),.clk2(clk2),.display(display),.scan(scan),.dp(dp));
 	
 	initial begin
 		pause=1'b0;
@@ -17,14 +17,26 @@ module t_taxi_top();
 	end
 		always #50 clk=~clk;
 		always #5 clk2=~clk2;
-		always #50 wheel_clk=~wheel_clk;
-	
+		always begin
+			for(i=0;i<500;i=i+1)begin
+			#4 wheel_clk=~wheel_clk;
+			end
+			for(i=0;i<20;i=i+1)begin
+			#60 wheel_clk=~wheel_clk;
+			end
+		end
+		
 		
 		initial begin
 		#50   start = 1;
 		      stop = 0;
 		      pause = 0;	
+		
+		#1000 pause = 1;
+		#100  pause = 0;
+		#3000 stop = 1;
 		end
+		
 		initial $monitor($time,"the display is: %d ,the scan is : %d ,the dp is : %d ",display,scan,dp);
 		
 endmodule
